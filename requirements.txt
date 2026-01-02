@@ -1,0 +1,15 @@
+# Core scientific stack
+numpy>=1.23
+pandas>=1.5
+scipy>=1.10
+matplotlib>=3.7
+
+# Computer vision
+opencv-python>=4.8
+
+# Machine learning
+scikit-learn>=1.3
+joblib>=1.3
+
+# Progress bar (used in steps 03/04)
+tqdm>=4.65
