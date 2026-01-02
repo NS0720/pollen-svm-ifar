@@ -226,9 +226,9 @@ Ten 400× magnification pollen images are included in `pollen_picture_folder/` a
 
 If you use this code, please cite the Zenodo record.
 
-- **Version DOI (v1.0.1):** 10.5281/zenodo.18130174  
+- **Version DOI (v1.0.1):** 10.5281/zenodo.18130679  
 - **Concept DOI (all versions):** 10.5281/zenodo.18129958  
 
 Suggested citation (APA):
 
-Suzuki, N. (2026). *NS0720/pollen-svm-ifar: v1.0.1 - IFAR pipeline (pollen detection → features → SVM) (v1.0.1).* Zenodo. https://doi.org/10.5281/zenodo.18130174
+Suzuki, N. (2026). *NS0720/pollen-svm-ifar: v1.0.1 - IFAR pipeline (pollen detection → features → SVM) (v1.0.2).* Zenodo. https://doi.org/10.5281/zenodo.18130679
