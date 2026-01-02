@@ -1,9 +1,12 @@
 # IFAR Pollen Image Pipeline (01–07)
 
-This repository contains the full, reproducible analysis pipeline used in the IFAR manuscript:
-**from raw 400× microscope images → 512×512 crops → engineered features (with z-scores) → SVM evaluation → permutation importance.**
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18129958.svg)](https://doi.org/10.5281/zenodo.18129958)
 
-> Note (manual step): Class labels (`type`) are assigned by expert visual inspection of the cropped images.
+This repository contains the full, reproducible analysis pipeline used in the IFAR manuscript:
+
+**raw 400× microscope images → 512×512 crops → engineered features (with z-scores) → SVM evaluation → permutation importance**
+
+> **Note (manual step):** Class labels (`type`) are assigned by expert visual inspection of the cropped images.  
 > This step is intentionally manual and is not automated in this repository.
 
 ---
@@ -107,12 +110,12 @@ out02\crop512_log_labeled.csv
 ---
 
 ### Step 03 — Estimate pollen center `(cx, cy)` from the 512×512 crop
-Script: `03_estimate_center_cxcy_IFAR_v2.py`
+Script: `03_estimate_center_cxcy_IFAR_v3.py`
 
 Example:
 
 ```cmd
-python 03_estimate_center_cxcy_IFAR_v2.py ^
+python 03_estimate_center_cxcy_IFAR_v3.py ^
   --csv_path out02\crop512_log_labeled.csv ^
   --image_dir out02 ^
   --filter_crop_ok ^
@@ -127,7 +130,7 @@ python 03_estimate_center_cxcy_IFAR_v2.py ^
 Optional debug overlays:
 
 ```cmd
-python 03_estimate_center_cxcy_IFAR_v2.py ^
+python 03_estimate_center_cxcy_IFAR_v3.py ^
   --csv_path out02\crop512_log_labeled.csv ^
   --image_dir out02 ^
   --filter_crop_ok ^
@@ -138,12 +141,12 @@ python 03_estimate_center_cxcy_IFAR_v2.py ^
 ---
 
 ### Step 04 — Generate 10 engineered features + `*_zscore`
-Script: `04_make_features10_IFAR_v2.py`
+Script: `04_make_features10_IFAR_v3.py`
 
 Example:
 
 ```cmd
-python 04_make_features10_IFAR_v2.py ^
+python 04_make_features10_IFAR_v3.py ^
   --csv_path out03\center.csv ^
   --image_dir out02 ^
   --filter_crop_ok ^
@@ -152,9 +155,9 @@ python 04_make_features10_IFAR_v2.py ^
 ```
 
 **Main outputs:**
-- `out04\features10_zscore.csv` (adds feature columns + 11 `*_zscore` columns + `feature_status`)
+- `out04\features10_zscore.csv` (adds feature columns + `*_zscore` columns + `feature_status`)
 
-This CSV is the **final dataset** used by scripts 05–07.
+This CSV is the **final dataset** used by scripts 05–07.  
 If you want to use the same filename as the manuscript scripts, either:
 - rename it to `pollen_10features_from_csv_reverse_zscore.csv`, or
 - edit `CSV_PATH` at the top of 05/06/07.
@@ -163,7 +166,7 @@ If you want to use the same filename as the manuscript scripts, either:
 
 ## ML / validation (scripts 05–07)
 
-These scripts read the final feature CSV (default: `pollen_10features_from_csv_reverse_zscore.csv`).
+These scripts read the final feature CSV (default: `pollen_10features_from_csv_reverse_zscore.csv`).  
 They do not currently use command-line arguments; configure by editing variables at the top of each script.
 
 ### Step 05 — Permutation importance + final SVM fit (interpretability)
@@ -175,7 +178,7 @@ Outputs (examples):
 - `svm_final_{...}_{suffix}.joblib`
 - `confusion_matrix_svm_5foldCV_{k}features_{suffix}.png`
 
-> Important: permutation importance here is for **interpretation**, not for unbiased performance estimation.
+> **Important:** permutation importance here is for **interpretation**, not for unbiased performance estimation.
 
 ---
 
@@ -190,33 +193,42 @@ Prints a table of mean±SD outer-CV scores for several feature sets.
 Script: `07_nestedCV_IFAR.py`
 
 Outputs include:
-- `confusion_matrix_oof_9z_1231.png`
-- `confusion_matrix_oof_9z_counts_1231.png`
-- `confusion_matrix_oof_9z_ratio_1231.png`
-- `roc_oof_9z_1231.png`
-- `pr_oof_9z_with_AUPRC_baseline_1231.png`
+- `confusion_matrix_oof_9z_*.png`
+- `roc_oof_9z_*.png`
+- `pr_oof_9z_with_AUPRC_baseline_*.png`
 
 These figures correspond to the **primary** (unbiased) performance evaluation.
 
 ---
 
-### Example images (included)
+## Example images (included)
 
-Ten 400x magnification pollen images are included in the pollen_picture_folder/ as data for replication.
+Ten 400× magnification pollen images are included in `pollen_picture_folder/` as a minimal dataset for reproduction.
 
 ---
 
 ## Notes on reproducibility (DOI-friendly)
 
 - Steps 02–04 write results **per row** and add `*_status` columns to avoid silent misalignment.
-- Keep each step output in a separate folder (`out01/..out04/`) to prevent accidental overwrites.
+- Keep each step output in a separate folder (`out01/`…`out04/`) to prevent accidental overwrites.
 - Manual labeling is expected; save the labeled CSV under a new name (e.g., `crop512_log_labeled.csv`).
 
 ---
 
-## Contact / authorship
+## Authorship / license
 
-Please fill in:
-- Author name Nobuyoshi Suzuki
-- License (MIT/BSD-3 recommended)
-- Citation information (optional but helpful): `CITATION.cff`
+- Author: **Nobuyoshi Suzuki**
+- License: **MIT License** (see `LICENSE`)
+
+---
+
+## Citation
+
+If you use this code, please cite the Zenodo record.
+
+- **Version DOI (v1.0.1):** 10.5281/zenodo.18130174  
+- **Concept DOI (all versions):** 10.5281/zenodo.18129958  
+
+Suggested citation (APA):
+
+Suzuki, N. (2026). *NS0720/pollen-svm-ifar: v1.0.1 - IFAR pipeline (pollen detection → features → SVM) (v1.0.1).* Zenodo. https://doi.org/10.5281/zenodo.18130174
